@@ -1,85 +1,42 @@
-Easing Library
-==============
+Story Mode
+===============
+[Story Mode](https://kanocomputing.ghost.io/discover-how-your-computer-works-with-story-mode/) is an adeventure game found on the abandoned Kano OS that teaches about the components and workings of a Raspberry Pi.
 
-This is a lua port of the Robert Penner's equations for easing. You can find much
-more information about it on [http://www.robertpenner.com/easing/](his web site).
+Background
+==========
+While many Kano applications are posted on [their GitHub page](https://github.com/KanoComputing), Story Mode is not.  However, the Debian Stretch package is available at [here](http://dev.kano.me/archive-stretch/pool/main/k/kano-overworld/kano-overworld_4.3.1-0-0.20190813build3_all.deb).  The `.deb` installs a [LÖVE](https://love2d.org/) application called `kanoOverworld.love`.  The `.love` file is simply a ZIP archive containing the source code, which is the initial commit of this repository.  The Kano developers apparently cloned [this repo](https://github.com/EmmanuelOga/easing) as a starting point, then began writing Story Mode without changing the README.
 
-This library was based off:
+Installation
+============
+The code currently does not run with LÖVE 11+, so we have to compile the source of 10.2 (the `make` step takes a while).  Referencing the instructions [here](https://love2d.org/wiki/Building_L%C3%96VE) and [here](https://www.love2d.org/wiki/Game_Distribution#Linux), do the following:
+```
+sudo apt update
+sudo apt upgrade
+sudo apt-get install build-essential autotools-dev automake libtool pkg-config libfreetype6-dev libluajit-5.1-dev libphysfs-dev libsdl2-dev libopenal-dev libogg-dev libvorbis-dev libmodplug-dev libmpg123-dev libtheora-dev zip
+cd ~
+git clone https://github.com/love2d/love.git
+cd love
+git checkout 0.10.2
+sed -i "s/ luaL_reg / luaL_Reg /g" src/libraries/luasocket/libluasocket/*
+/platform/unix/automagic
+./configure
+make
+sudo ln -s ~/love/src/love /usr/bin/love
+cd ..
+git clone https://github.com/bggardner/kano-overworld.git`
+cd kano-overworld
+zip -9 -r kanoOverworld.love .
+```
 
-* [http://code.google.com/p/tweener/](Tweener, ActionScript tweening library)
-* [http://coderepos.org/share/wiki/JSTweener](JavaScript port of tweener, by Yuichi Tateno)
-
-However, only the easing functions are included, and not any kind of tweening helpers.
-
+The goal is to modify this repository to simplify installation to this, using the Raspberry Pi OS package for LÖVE:
+```
+sudo apt update
+sudo apt upgrade
+sudo apt install love zip
+git clone https://github.com/bggardner/kano-overworld.git
+cd kano-overworld
+zip -9 -r kano-overworld.love .
+```
 Usage
 =====
-
-Requiring the easing library returns a table which contains all the different
-functions.
-
-    local easingFunctions = require("easing")
-
-    outInBounce = easingFunctions.outInBounce
-
-    -- All easing functions take these parameters:
-    --
-    -- t = time     should go from 0 to duration
-    -- b = begin    value of the property being ease.
-    -- c = change   ending value of the property - beginning value of the property
-    -- d = duration
-
-    -- Some functions allow additional modifiers, like the elastic functions
-    -- which also can receive an amplitud and a period parameters (defaults
-    -- are included)
-
-    beginVal = 0
-    endVal = 1
-    change = endVal - beginVal
-    duration = 1
-
-    print(outInBounce(0             , beginVal, change, duration)) --> 0
-    print(outInBounce(duration / 4  , beginVal, change, duration)) --> 0.3828125
-    print(outInBounce(duration / 2  , beginVal, change, duration)) --> 0.5
-    print(outInBounce(duration / 3/4, beginVal, change, duration)) --> 0.10503472222222
-    print(outInBounce(duration      , beginVal, change, duration)) --> 1
-
-Examples
-========
-
-There is a plain lua example and an interactive one based on the [LÖVE](http://love2d.org)
-game library. To run the examples you'll need to get the engine from
-[http://love2d.org](http://love2d.org). Once you have the love executable, move into the
-examples/love directory and run "love ."
-
-![love2d running easing examples](https://github.com/EmmanuelOga/easing/raw/master/doc/ease-love.png "easing on love2d")
-
-Running Tests
-=============
-
-To run the tests you'll need [telescope](https://github.com/norman/telescope).
-From the library's root directory, run:
-
-    ▸ tsc tests/easing_tests.lua
-    80 tests 80 passed 80 assertions 0 failed 0 errors 0 unassertive 0 pending
-
-TODO
-====
-
-Copy the documentation from the tweener source and convert it to luadoc.
-
-License
-=======
-
-Like the tweener library, easing is licensed under the MIT license.
-
-Authors
-=======
-
-* Tweener authors
-* Yuichi Tateno
-* Emmanuel Oga
-
-Contributors
-============
-
-* kikito (Enrique García) (https://github.com/EmmanuelOga/easing/pull/2)
+`love ~/kano-overworld/kanoOverworld.love`
