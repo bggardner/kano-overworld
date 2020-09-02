@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+
+  <objecttype name="SpawnPoint" color="#a4a0a0"/>
+
+  <objecttype name="Portal" color="#a0a0a4">
+    <property name="nextMap" type="string"/>
+  </objecttype>
+
+  <objecttype name="Door" color="#a0a0a4">
+    <property name="id" type="string"/>
+    <property name="nextMap" type="string"/>
+    <property name="orientation" type="string"/>
+  </objecttype>
+
+  <objecttype name="SignPost" color="#a0a0a4">
+    <property name="dialogue" type="string"/>
+  </objecttype>
+
+  <objecttype name="Painting" color="#a0a0a4">
+    <property name="dialogue" type="string"/>
+    <property name="share" type="int"/>
+  </objecttype>
+
+  <objecttype name="Terminal" color="#a0a0a4">
+    <property name="dialogue" type="string"/>
+  </objecttype>
+
+  <objecttype name="UpdaterTerminal" color="#a0a0a4">
+    <property name="dialogue" type="string"/>
+  </objecttype>
+
+  <objecttype name="InternetStatus" color="#a4a0a0"/>
+
+  <objecttype name="Npc" color="#a0a0a4">
+    <property name="ai" type="string" default="static"/>
+    <property name="loop" type="bool" default="true"/>
+    <property name="path" type="string"/>
+    <property name="velocity" type="int" default="200"/>
+    <property name="portraitIndex" type="int" default="1"/>
+    <property name="dialogue" type="string"/>
+    <property name="quests" type="string"/>
+    <property name="evolutions" type="string"/>
+  </objecttype>
+
+  <objecttype name="WhiteRabbit" color="#a0a0a4">
+    <property name="velocity" type="int" default="250"/>
+    <property name="loop" type="bool" default="true"/>
+    <property name="path" type="string"/>
+    <property name="disappears" type="bool" default="true"/>
+  </objecttype>
+
+  <objecttype name="Plaque" color="#a0a0a4">
+    <property name="share" type="int"/>
+  </objecttype>
+
+  <objecttype name="PlaqueStatic" color="#a0a0a4">
+    <property name="dialogue" type="string"/>
+  </objecttype>
+
+  <objecttype name="AudioVisualiser" color="#a0a0a4">
+    <property name="id" type="string"/>
+  </objecttype>
+
+  <objecttype name="PressurePlate" color="#a0a0a4">
+    <property name="connectedIds" type="string"/>
+    <property name="data" type="string"/>
+  </objecttype>
+
+</objecttypes>
