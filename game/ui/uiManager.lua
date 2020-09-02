@@ -64,7 +64,7 @@ function UiManager:load()
     -- Check if the world has a minimap
     local worldArg = Utils.getArgs()['-w'] or Utils.getArgs()['--world']
     local worldId = worldArg or g_resMngr:getSaveData().gameManager.worldId
-    if love.filesystem.exists('res/minimaps/' .. worldId .. '/minimap.lua') then
+    if love.filesystem.getInfo('res/minimaps/' .. worldId .. '/minimap.lua') then
         self.uiStates[self.STATE_MENU] = Menu.create(worldId, self.gameStates, self)
     else
         self.uiStates[self.STATE_MENU] = nil

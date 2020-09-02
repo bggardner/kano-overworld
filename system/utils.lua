@@ -65,15 +65,16 @@ function Utils.takeScreenshot(_x, _y)
     _y = Utils.clamp(_y, 0, g.getHeight() - h)
     local pos = {x = _x, y = _y}
 
-    local cropped = love.image.newImageData(w, h)   -- final cropped image
-    local raw = love.graphics.newScreenshot()       -- full screen screenshot
-
-    -- copy the pixels from raw to the final image
-    cropped:paste(raw, 0, 0, pos.x, pos.y, w, h)
-    -- save the image file
-    cropped:encode(format, name .. '.' .. format)
-    cropped = nil
-    raw = nil
+    local function saveScreenshot(raw)
+        local cropped = love.image.newImageData(w, h)   -- final cropped image
+        -- copy the pixels from raw to the final image
+        cropped:paste(raw, 0, 0, pos.x, pos.y, w, h)
+        -- save the image file
+        cropped:encode(format, name .. '.' .. format)
+        cropped = nil
+        raw = nil
+    end
+    love.graphics.captureScreenshot(saveScreenshot)       -- full screen screenshot
 end
 
 function Utils.setText(textObject, text)
@@ -292,11 +293,14 @@ function Utils.getFileTree(dir, fileTree)
     for _, fileName in ipairs(filesTable) do
         local filePath = dir .. "/" .. fileName
 
-        if f.isFile(filePath) then
-            table.insert(fileTree, fileName)
-        elseif f.isDirectory(filePath) then
-            fileTree[fileName] = {}
-            Utils.getFileTree(filePath, fileTree[fileName])
+        local fileInfo = f.getInfo(filePath)
+        if fileInfo then
+            if fileInfo.type == "file" then
+                table.insert(fileTree, fileName)
+            elseif fileInfo.type == "directory" then
+                fileTree[fileName] = {}
+                Utils.getFileTree(filePath, fileTree[fileName])
+            end
         end
     end
     return fileTree

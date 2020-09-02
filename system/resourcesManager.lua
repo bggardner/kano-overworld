@@ -118,7 +118,7 @@ end
 
 function ResourcesManager.loadImage(imageFile)
     local path = PATH_IMAGES..imageFile
-    if love.filesystem.exists(path) then
+    if love.filesystem.getInfo(path) then
         local img = g.newImage(path)
         img:setFilter('nearest', 'nearest')
         return img

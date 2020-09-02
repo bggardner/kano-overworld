@@ -51,11 +51,11 @@ local Colour =
 }
 
 function Colour.set(colour, alpha)
-    g.setColor(colour.r, colour.g, colour.b, alpha or 255)
+    g.setColor(colour.r / 255, colour.g / 255, colour.b / 266, (alpha or 255) / 255)
 end
 
 function Colour.reset()
-    g.setColor(Colour.WHITE.r, Colour.WHITE.g, Colour.WHITE.b, 255)
+    g.setColor(Colour.WHITE.r / 255, Colour.WHITE.g / 255, Colour.WHITE.b / 255, 1)
 end
 
 return Colour

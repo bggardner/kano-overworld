@@ -125,7 +125,8 @@ end
 function Map:loadPlugins(plugins)
 	for _, plugin in ipairs(plugins) do
 		local p = pluginPath .. plugin .. ".lua"
-		if love.filesystem.isFile(p) then
+                local pInfo = love.filesystem.getInfo(p)
+		if pInfo and pInfo.type == "file" then
 			local file = love.filesystem.load(p)()
 			for k, func in pairs(file) do
 				if not self[k] then
@@ -232,7 +233,7 @@ function Map:setLayer(layer, path, i)
 	if layer.encoding then
 		if layer.encoding == "base64" then
 			local ffi = assert(require "ffi", "Compressed maps require LuaJIT FFI.\nPlease Switch your interperator to LuaJIT or your Tile Layer Format to \"CSV\".")
-			local fd  = love.filesystem.newFileData(layer.data, "data", "base64"):getString()
+			local fd  = love.data.decode("string", "base64", layer.data)
 
 			local function getDecompressedData(data)
 				local d       = {}
@@ -248,15 +249,15 @@ function Map:setLayer(layer, path, i)
 			if not layer.compression then
 				layer.data = getDecompressedData(fd)
 			else
-				assert(love.math.decompress, "zlib and gzip compression require LOVE 0.10.0+.\nPlease set your Tile Layer Format to \"Base64 (uncompressed)\" or \"CSV\".")
+				assert(love.data.decompress, "zlib and gzip compression require LOVE 0.10.0+.\nPlease set your Tile Layer Format to \"Base64 (uncompressed)\" or \"CSV\".")
 
 				if layer.compression == "zlib" then
-					local data = love.math.decompress(fd, "zlib")
+					local data = love.data.decompress("string", fd, "zlib")
 					layer.data = getDecompressedData(data)
 				end
 
 				if layer.compression == "gzip" then
-					local data = love.math.decompress(fd, "gzip")
+					local data = love.data.decompress("string", fd, "gzip")
 					layer.data = getDecompressedData(data)
 				end
 			end
@@ -863,9 +864,9 @@ end
 -- @param layer The Layer to draw
 -- @return nil
 function Map:drawLayer(layer)
-	love.graphics.setColor(255, 255, 255, 255 * layer.opacity)
+	love.graphics.setColor(1, 1, 1, layer.opacity)
 	layer:draw()
-	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.setColor(1, 1, 1, 1)
 end
 
 --- Default draw function for Tile Layers
@@ -930,7 +931,7 @@ function Map:drawObjectLayer(layer)
 	local line   = { 160, 160, 160, 255 * layer.opacity       }
 	local fill   = { 160, 160, 160, 255 * layer.opacity * 0.2 }
 	local shadow = {   0,   0,   0, 255 * layer.opacity       }
-	local reset  = { 255, 255, 255, 255 * layer.opacity       }
+	local reset  = { 1, 1, 1, layer.opacity       }
 
 	local function sortVertices(obj)
 		local vertices = {{},{}}
@@ -949,14 +950,14 @@ function Map:drawObjectLayer(layer)
 		local vertices = sortVertices(obj)
 
 		if shape == "polyline" then
-			love.graphics.setColor(shadow)
+			love.graphics.setColor(shadow / 255)
 			love.graphics.line(vertices[2])
-			love.graphics.setColor(line)
+			love.graphics.setColor(line / 255)
 			love.graphics.line(vertices[1])
 
 			return
 		elseif shape == "polygon" then
-			love.graphics.setColor(fill)
+			love.graphics.setColor(fill / 255)
 			if not love.math.isConvex(vertices[1]) then
 				local triangles = love.math.triangulate(vertices[1])
 				for _, triangle in ipairs(triangles) do
@@ -966,13 +967,13 @@ function Map:drawObjectLayer(layer)
 				love.graphics.polygon("fill", vertices[1])
 			end
 		else
-			love.graphics.setColor(fill)
+			love.graphics.setColor(fill / 255)
 			love.graphics.polygon("fill", vertices[1])
 		end
 
-		love.graphics.setColor(shadow)
+		love.graphics.setColor(shadow / 255)
 		love.graphics.polygon("line", vertices[2])
-		love.graphics.setColor(line)
+		love.graphics.setColor(line / 255)
 		love.graphics.polygon("line", vertices[1])
 	end
 

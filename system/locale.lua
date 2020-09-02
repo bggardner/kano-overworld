@@ -32,13 +32,13 @@ function Locale.load()
     local locale = Utils.stringSplit(os.getenv('LANG') or '', '.')[1]
 
     local filepath = string.format(LANG_FILE_RECIPE_PATH, locale, LANG_FILENAME)
-    if f.exists(filepath) then
+    if f.getInfo(filepath) then
         localisedLang = f.load(filepath)()
         currentLocale = locale
     end
 
     filepath = string.format(LANG_FILE_RECIPE_PATH, DEFAULT_LOCALE, LANG_FILENAME)
-    if f.exists(filepath) then
+    if f.getInfo(filepath) then
         defaultLang = f.load(filepath)()
     end
 end

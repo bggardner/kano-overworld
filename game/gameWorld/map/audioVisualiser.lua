@@ -216,7 +216,7 @@ function averageSubsampling(self, soundData, zoomFactor)
         -- Iterate over a block of samples to produce one subsample.
         for j = i, blockEnd do
             -- Stereo.
-            if soundData:getChannels() == 2 then
+            if soundData:getChannelCount() == 2 then
                 -- Extract left and right channel samples.
                 left = soundData:getSample(j * 2)
                 right = soundData:getSample(j * 2 + 1)

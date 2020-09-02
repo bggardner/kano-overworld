@@ -42,9 +42,9 @@ function Savefile:load()
     love.filesystem.createDirectory(SYNC_DIR)
 
     -- look for the savefile at the default location or the sync dir
-    if love.filesystem.exists(SAVEFILE_NAME) then
+    if love.filesystem.getInfo(SAVEFILE_NAME) then
         savefilePath = SAVEFILE_NAME
-    elseif love.filesystem.exists(SYNC_SAVEFILE_PATH) then
+    elseif love.filesystem.getInfo(SYNC_SAVEFILE_PATH) then
         savefilePath = SYNC_SAVEFILE_PATH
     end
 
