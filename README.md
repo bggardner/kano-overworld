@@ -25,7 +25,7 @@ sudo ln -s ~/love/src/love /usr/bin/love
 cd ..
 git clone https://github.com/bggardner/kano-overworld.git`
 cd kano-overworld
-zip -9 -r kanoOverworld.love .
+zip -9 -r kanoOverworld.love . -x ./.git\*
 ```
 
 The goal is to modify this repository to simplify installation to this, using the Raspberry Pi OS package for LÖVE:
@@ -35,7 +35,7 @@ sudo apt upgrade
 sudo apt install love zip
 git clone https://github.com/bggardner/kano-overworld.git
 cd kano-overworld
-zip -9 -r kano-overworld.love .
+zip -9 -r kano-overworld.love . -x ./.git\*
 ```
 Usage
 =====
