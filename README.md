@@ -1,6 +1,6 @@
 Story Mode
 ===============
-[Story Mode](https://kanocomputing.ghost.io/discover-how-your-computer-works-with-story-mode/) is an adeventure game found on the abandoned Kano OS that teaches about the components and workings of a Raspberry Pi.
+[Story Mode](https://kanocomputing.ghost.io/discover-how-your-computer-works-with-story-mode/) is an adventure game found on the abandoned Kano OS that teaches about the components and workings of a Raspberry Pi.
 
 Background
 ==========
